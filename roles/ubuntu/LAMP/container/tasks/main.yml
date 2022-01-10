@@ -1,0 +1,54 @@
+---
+# tasks file for container
+
+#Creating docker directory and copying Dockerfiles (START)
+- name: Creating Build Directory
+  file:
+    path: "/home/ferrerasjoshua/Ferreras_Containerization2/docker"
+    state: directory
+
+- name: Copying Dockerfile
+  copy:
+    src: "/home/ferrerasjoshua/Ferreras_Containerization2/Dockerfile"
+    dest: "/home/ferrerasjoshua/Ferreras_Containerization2/docker/Dockerfile"
+
+#Creating docket directory and copying Dockerfiles (END)
+
+#Creating Docker container(START)
+- name: Building Container Imange
+  docker_image:
+    name: hoa5-2
+    tag: v1
+    path: "/home/ferrerasjoshua/Ferreras_Containerization2/docker"
+    state: present
+
+#Creating Docker container(END)
+
+
+#Running the created Docker Container(START)
+- name: Running the Container
+  docker_container:
+    image: hoa5-2:v1
+    name: hoa5-2
+    state: started
+    ports:
+      - "8080:80"
+
+#Running the created Docker Container(END)
+
+
+
+
+#Running pulled images (START)
+- name: Running Apache-PHP
+  docker_container:
+    image: romeoz/docker-apache-php:latest
+    name: romeoz
+    state: started
+
+- name: Running MySQL
+  docker_container:
+    image: mysql/mysql-server:latest
+    name: mysql
+    state: started
+#Running pulled images (END)
